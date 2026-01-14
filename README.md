@@ -68,6 +68,59 @@ Open **http://localhost:3080** and create an account.
 | coil-vectordb | Document embeddings | - |
 | coil-rag-api | Document chat API | - |
 
+### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         YOU (Browser)                            │
+│                      localhost:3080                              │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+                            ▼
+┌───────────────────────────────────────────────────────────────────┐
+│                         CoilAI                                    │
+│              (Main Application - LibreChat)                       │
+│                                                                   │
+│   Handles: UI, AI requests, MCP tools, user auth                  │
+└───────┬──────────────┬─────────────────┬─────────────────────────┘
+        │              │                 │
+        ▼              ▼                 ▼
+┌───────────────┐ ┌────────────┐ ┌─────────────────┐
+│ coil-mongodb  │ │ coil-meili │ │   coil-rag-api  │
+│               │ │  search    │ │                 │
+│ Stores:       │ │            │ │ Processes:      │
+│ • Users       │ │ Indexes:   │ │ • PDF uploads   │
+│ • Chats       │ │ • Messages │ │ • Document Q&A  │
+│ • Messages    │ │ for search │ │                 │
+│ • Settings    │ └────────────┘ └────────┬────────┘
+└───────────────┘                         │
+                                          ▼
+                                  ┌───────────────┐
+                                  │ coil-vectordb │
+                                  │               │
+                                  │ Stores:       │
+                                  │ • Embeddings  │
+                                  │ • Vector data │
+                                  └───────────────┘
+
+                    ┌─────────────────────────────────┐
+                    │       Coil MCP Server           │
+                    │      (localhost:8123)           │
+                    │                                 │
+                    │  Your HVAC data tools:          │
+                    │  • get_estimates_overview       │
+                    │  • get_top_sellers              │
+                    │  • get_pipeline_analysis        │
+                    │  • run_query_mcp                │
+                    └────────────────┬────────────────┘
+                                     │
+                                     ▼
+                          ┌─────────────────────┐
+                          │  PostgreSQL (RDS)   │
+                          │  ServiceTitan Data  │
+                          └─────────────────────┘
+```
+
 ## 🔧 Common Commands
 
 ```powershell
