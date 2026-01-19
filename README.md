@@ -29,11 +29,14 @@ python coil_mcp_server_local.py --sse
 
 ### 2. Configure Environment
 
-Edit `.env` and add your API key:
+Copy the template and add your API keys:
 
-```env
-ANTHROPIC_API_KEY=sk-ant-your-key-here
+```powershell
+cp env.template .env
+notepad .env
 ```
+
+Fill in at least one API key (Anthropic or OpenAI) and change the security keys.
 
 ### 3. Start Coil.ai
 
@@ -144,12 +147,13 @@ docker compose ps
 
 ```
 Coil/Librechat/
-├── .env                    # Environment variables (API keys)
+├── env.template            # Template for .env (copy to .env)
+├── .env                    # Your API keys (not in git)
 ├── librechat.yaml          # Application configuration
 ├── docker-compose.yml      # Docker services
-├── data-node/              # MongoDB data
-├── uploads/                # Uploaded files
-├── logs/                   # Application logs
+├── data-node/              # MongoDB data (not in git)
+├── uploads/                # Uploaded files (not in git)
+├── logs/                   # Application logs (not in git)
 └── api/, client/, packages/  # Source code (for customization)
 ```
 
