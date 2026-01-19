@@ -46,6 +46,7 @@ interface:
 # ===========================================
 mcpSettings:
   allowedDomains:
+    - 'mcp_server'
     - 'host.docker.internal'
     - 'localhost'
     - '*.amazonaws.com'
@@ -56,7 +57,7 @@ mcpSettings:
 mcpServers:
   coil:
     type: sse
-    url: http://host.docker.internal:8123/sse
+    url: http://mcp_server:8123/sse
     timeout: 120000
 
 # ===========================================

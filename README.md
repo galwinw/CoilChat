@@ -20,29 +20,38 @@ AI-powered business intelligence for HVAC companies, built on LibreChat with a c
 - Python 3.10+
 - Anthropic or OpenAI API key
 
-### 1. Start the MCP Server
+### 1. Clone & Configure
 
 ```powershell
-cd C:\Users\galwi\Coil\coil.ai
-python coil_mcp_server_local.py --sse
-```
+git clone https://github.com/galwinw/CoilChat.git
+cd CoilChat
+git checkout dev
 
-### 2. Configure Environment
-
-Copy the template and add your API keys:
-
-```powershell
+# Create .env from template
 cp env.template .env
 notepad .env
 ```
 
-Fill in at least one API key (Anthropic or OpenAI) and change the security keys.
+Edit `.env`:
+- Add your `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`
+- Change all `CHANGE_ME` values to random strings
 
-### 3. Start Coil.ai
+### 2. Configure MCP Server Database
+
+```powershell
+cd mcp-server
+cp .env.template .env
+notepad .env   # Fill in DB_HOST, DB_USER, DB_PASSWORD
+cd ..
+```
+
+### 3. Start Everything
 
 ```powershell
 docker compose up -d
 ```
+
+This starts all services including the MCP server - no separate terminal needed!
 
 ### 4. Access the App
 
@@ -66,6 +75,7 @@ Open **http://localhost:3080** and create an account.
 | Service | Purpose | Port |
 |---------|---------|------|
 | CoilAI | Main application | 3080 |
+| coil-mcp-server | HVAC data tools | - |
 | coil-mongodb | Conversation storage | - |
 | coil-meilisearch | Message search | - |
 | coil-vectordb | Document embeddings | - |
@@ -106,22 +116,22 @@ Open **http://localhost:3080** and create an account.
                                   │ • Vector data │
                                   └───────────────┘
 
-                    ┌─────────────────────────────────┐
-                    │       Coil MCP Server           │
-                    │      (localhost:8123)           │
-                    │                                 │
-                    │  Your HVAC data tools:          │
-                    │  • get_estimates_overview       │
-                    │  • get_top_sellers              │
-                    │  • get_pipeline_analysis        │
-                    │  • run_query_mcp                │
-                    └────────────────┬────────────────┘
-                                     │
-                                     ▼
-                          ┌─────────────────────┐
-                          │  PostgreSQL (RDS)   │
-                          │  ServiceTitan Data  │
-                          └─────────────────────┘
+┌─────────────────────────────────┐
+│     coil-mcp-server             │
+│   (Docker Container)            │
+│                                 │
+│  Your HVAC data tools:          │
+│  • get_estimates_overview       │
+│  • get_top_sellers              │
+│  • get_pipeline_analysis        │
+│  • run_query_mcp                │
+└────────────────┬────────────────┘
+                 │
+                 ▼
+      ┌─────────────────────┐
+      │  PostgreSQL (RDS)   │
+      │  ServiceTitan Data  │
+      └─────────────────────┘
 ```
 
 ## 🔧 Common Commands
@@ -146,14 +156,20 @@ docker compose ps
 ## 📁 Project Structure
 
 ```
-Coil/Librechat/
-├── env.template            # Template for .env (copy to .env)
-├── .env                    # Your API keys (not in git)
-├── librechat.yaml          # Application configuration
-├── docker-compose.yml      # Docker services
-├── data-node/              # MongoDB data (not in git)
-├── uploads/                # Uploaded files (not in git)
-├── logs/                   # Application logs (not in git)
+CoilChat/
+├── env.template              # Template for .env (copy to .env)
+├── .env                      # Your API keys (not in git)
+├── librechat.yaml            # Application configuration
+├── docker-compose.yml        # Docker services
+├── mcp-server/               # Coil MCP Server
+│   ├── coil_mcp_server.py       # Remote version (AWS RDS)
+│   ├── coil_mcp_server_local.py # Local version
+│   ├── .env.template            # DB config template
+│   ├── .env                     # Your DB credentials (not in git)
+│   └── requirements.txt
+├── data-node/                # MongoDB data (not in git)
+├── uploads/                  # Uploaded files (not in git)
+├── logs/                     # Application logs (not in git)
 └── api/, client/, packages/  # Source code (for customization)
 ```
 
