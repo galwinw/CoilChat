@@ -66,9 +66,10 @@ bower_components/
 .floo
 .flooignore
 
-#config file
-librechat.yaml
-librechat.yml
+# Config file - NOTE: librechat.yaml is NOT ignored for Coil.ai
+# (Original LibreChat ignores this, but we want to share our config)
+# librechat.yaml
+# librechat.yml
 
 # Environment
 .npmrc

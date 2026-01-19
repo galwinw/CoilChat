@@ -1,0 +1,115 @@
+# ==================================================
+# Coil.ai - HVAC Business Intelligence Platform
+# ==================================================
+# Powered by LibreChat | https://www.librechat.ai/docs
+
+version: 1.2.1
+
+# Performance
+cache: true
+
+# ===========================================
+# Interface Configuration
+# ===========================================
+interface:
+  customWelcome: |
+    Welcome to Coil.ai - Your HVAC Business Intelligence Assistant!
+    
+    I can help you analyze your ServiceTitan data:
+    • Estimates overview and trends
+    • Top performing salespeople
+    • Pipeline analysis
+    • Custom database queries
+    
+    Just ask me anything about your HVAC business data!
+  
+  # Enabled Features
+  endpointsMenu: true
+  modelSelect: true
+  parameters: true
+  sidePanel: true
+  presets: true
+  prompts: true
+  bookmarks: true
+  multiConvo: true
+  agents: true
+  fileSearch: true  # Document chat
+
+  # MCP Server permissions
+  mcpServers:
+    use: true
+    create: false
+    share: false
+
+# ===========================================
+# MCP Settings
+# ===========================================
+mcpSettings:
+  allowedDomains:
+    - 'host.docker.internal'
+    - 'localhost'
+    - '*.amazonaws.com'
+
+# ===========================================
+# Coil MCP Server
+# ===========================================
+mcpServers:
+  coil:
+    type: sse
+    url: http://host.docker.internal:8123/sse
+    timeout: 120000
+
+# ===========================================
+# Registration (Email/Password only)
+# ===========================================
+registration:
+  socialLogins: []
+
+# ===========================================
+# Speech Configuration (TTS/STT)
+# ===========================================
+# Uncomment and configure when ready to use speech features
+# speech:
+#   tts:
+#     openai:
+#       apiKey: '${OPENAI_API_KEY}'
+#       model: 'tts-1'
+#       voices: ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
+#   stt:
+#     openai:
+#       apiKey: '${OPENAI_API_KEY}'
+#       model: 'whisper-1'
+
+# ===========================================
+# AI Endpoints
+# ===========================================
+endpoints:
+  # Agent capabilities (for MCP tools)
+  agents:
+    recursionLimit: 50
+    maxRecursionLimit: 100
+    disableBuilder: false
+    capabilities: ["execute_code", "file_search", "actions", "tools"]
+
+# ===========================================
+# File Upload Configuration
+# ===========================================
+fileConfig:
+  endpoints:
+    default:
+      totalSizeLimit: 50  # MB
+      fileSizeLimit: 20   # MB per file
+
+# ===========================================
+# Disabled Features
+# ===========================================
+# Image generation is disabled for this deployment
+# To enable later, add DALL-E or other image provider config
+
+# ===========================================
+# Security - Domain Restrictions
+# ===========================================
+actions:
+  allowedDomains:
+    - 'host.docker.internal'
+    - 'localhost'
