@@ -7,7 +7,6 @@ AI-powered business intelligence for HVAC companies, built on LibreChat with a c
 - **ServiceTitan Integration** - Query your HVAC business data directly
 - **AI Chat Interface** - Natural language questions about your data
 - **Claude & GPT Support** - Multiple AI model options
-- **Document Chat** - Upload and analyze documents
 - **Message Search** - Find past conversations quickly
 - **Multi-User** - Team access with authentication
 - **Speech Support** - Text-to-speech and speech-to-text
@@ -78,8 +77,6 @@ Open **http://localhost:3080** and create an account.
 | coil-mcp-server | HVAC data tools | - |
 | coil-mongodb | Conversation storage | - |
 | coil-meilisearch | Message search | - |
-| coil-vectordb | Document embeddings | - |
-| coil-rag-api | Document chat API | - |
 
 ### Architecture Diagram
 
@@ -95,26 +92,18 @@ Open **http://localhost:3080** and create an account.
 │              (Main Application - LibreChat)                       │
 │                                                                   │
 │   Handles: UI, AI requests, MCP tools, user auth                  │
-└───────┬──────────────┬─────────────────┬─────────────────────────┘
-        │              │                 │
-        ▼              ▼                 ▼
-┌───────────────┐ ┌────────────┐ ┌─────────────────┐
-│ coil-mongodb  │ │ coil-meili │ │   coil-rag-api  │
-│               │ │  search    │ │                 │
-│ Stores:       │ │            │ │ Processes:      │
-│ • Users       │ │ Indexes:   │ │ • PDF uploads   │
-│ • Chats       │ │ • Messages │ │ • Document Q&A  │
-│ • Messages    │ │ for search │ │                 │
-│ • Settings    │ └────────────┘ └────────┬────────┘
-└───────────────┘                         │
-                                          ▼
-                                  ┌───────────────┐
-                                  │ coil-vectordb │
-                                  │               │
-                                  │ Stores:       │
-                                  │ • Embeddings  │
-                                  │ • Vector data │
-                                  └───────────────┘
+└───────┬──────────────┬────────────────────────────────────────────┘
+        │              │
+        ▼              ▼
+┌───────────────┐ ┌────────────┐
+│ coil-mongodb  │ │ coil-meili │
+│               │ │  search    │
+│ Stores:       │ │            │
+│ • Users       │ │ Indexes:   │
+│ • Chats       │ │ • Messages │
+│ • Messages    │ │ for search │
+│ • Settings    │ └────────────┘
+└───────────────┘
 
 ┌─────────────────────────────────┐
 │     coil-mcp-server             │

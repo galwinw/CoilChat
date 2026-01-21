@@ -2,11 +2,10 @@
 # Coil.ai - Docker Compose Configuration
 # ==================================================
 # Services:
+#   - mcp_server - Coil MCP Server (HVAC tools)
 #   - api (Coil.ai/LibreChat) - Main application
 #   - mongodb - Conversation storage
 #   - meilisearch - Message search
-#   - vectordb - Document embeddings (RAG)
-#   - rag_api - Document chat API
 
 services:
   # ===========================================
@@ -35,7 +34,6 @@ services:
       - "${PORT}:${PORT}"
     depends_on:
       - mongodb
-      - rag_api
       - mcp_server
     image: ghcr.io/danny-avila/librechat:latest
     restart: always
@@ -46,8 +44,6 @@ services:
       - HOST=0.0.0.0
       - MONGO_URI=mongodb://mongodb:27017/LibreChat
       - MEILI_HOST=http://meilisearch:7700
-      - RAG_PORT=${RAG_PORT:-8000}
-      - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
     volumes:
       - type: bind
         source: ./.env
@@ -86,36 +82,3 @@ services:
     volumes:
       - ./meili_data_v1.12:/meili_data
 
-  # ===========================================
-  # VectorDB - Document Embeddings (for RAG)
-  # ===========================================
-  vectordb:
-    container_name: coil-vectordb
-    image: pgvector/pgvector:0.8.0-pg15-trixie
-    environment:
-      POSTGRES_DB: coil_rag
-      POSTGRES_USER: coil
-      POSTGRES_PASSWORD: coilpassword
-    restart: always
-    volumes:
-      - pgdata2:/var/lib/postgresql/data
-
-  # ===========================================
-  # RAG API - Document Chat
-  # ===========================================
-  rag_api:
-    container_name: coil-rag-api
-    image: ghcr.io/danny-avila/librechat-rag-api-dev:latest
-    environment:
-      - DB_HOST=vectordb
-      - RAG_PORT=${RAG_PORT:-8000}
-    restart: always
-    depends_on:
-      - vectordb
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    env_file:
-      - .env
-
-volumes:
-  pgdata2:

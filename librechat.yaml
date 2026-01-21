@@ -33,7 +33,6 @@ interface:
   bookmarks: true
   multiConvo: true
   agents: true
-  fileSearch: true  # Document chat
 
   # MCP Server permissions
   mcpServers:
@@ -90,22 +89,13 @@ endpoints:
     recursionLimit: 50
     maxRecursionLimit: 100
     disableBuilder: false
-    capabilities: ["execute_code", "file_search", "actions", "tools"]
-
-# ===========================================
-# File Upload Configuration
-# ===========================================
-fileConfig:
-  endpoints:
-    default:
-      totalSizeLimit: 50  # MB
-      fileSizeLimit: 20   # MB per file
+    capabilities: ["execute_code", "actions", "tools"]
 
 # ===========================================
 # Disabled Features
 # ===========================================
-# Image generation is disabled for this deployment
-# To enable later, add DALL-E or other image provider config
+# RAG (Document Chat) - Disabled for multi-tenant security
+# Image generation - Disabled for this deployment
 
 # ===========================================
 # Security - Domain Restrictions
