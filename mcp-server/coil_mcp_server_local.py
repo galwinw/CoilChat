@@ -146,7 +146,7 @@ def test_connection():
         return f"Connection failed: {str(e)}"
 
 @mcp.tool()
-def run_query_mcp(query: str):
+def execute_query(query: str):
     """Run a custom SQL query against the database.
     
     IMPORTANT: Always use the 'norm' schema for all queries (e.g., norm.estimates, norm.customers).

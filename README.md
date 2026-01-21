@@ -66,7 +66,7 @@ Open **http://localhost:3080** and create an account.
 | `get_pipeline_analysis` | Open estimates pipeline |
 | `get_database_schema` | View all tables and columns |
 | `get_table_info` | Analyze specific tables |
-| `run_query_mcp` | Execute custom SQL queries |
+| `execute_query` | Execute custom SQL queries |
 | `test_connection` | Verify database connectivity |
 
 ## 🐳 Docker Services
